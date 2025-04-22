@@ -1,0 +1,776 @@
+:root {
+    /* Main color scheme */
+    --primary: #1d4ed8;
+    --primary-dark: #1e40af;
+    --primary-light: #dbeafe;
+    --accent: #f97316;
+    --accent-light: #ffedd5;
+    
+    /* Text colors */
+    --text: #1e293b;
+    --text-light: #64748b;
+    --text-xlight: #94a3b8;
+    
+    /* UI colors */
+    --background: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    
+    /* Effects */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 15px rgba(0,0,0,0.03);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.12), 0 2px 5px rgba(0,0,0,0.05);
+    --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.04);
+    
+    /* Radius and transitions */
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+    --transition-fast: all 0.2s ease;
+    --transition: all 0.3s ease;
+    --transition-slow: all 0.5s ease;
+    
+    /* Dark mode variables (for future use) */
+    --dm-background: #0f172a;
+    --dm-card: #1e293b;
+    --dm-text: #f1f5f9;
+    --dm-text-light: #cbd5e1;
+    --dm-border: #334155;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-image: 
+        radial-gradient(circle at 20% 35%, rgba(29, 78, 216, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 44%, rgba(249, 115, 22, 0.05) 0%, transparent 60%);
+    background-attachment: fixed;
+}
+
+/* Header section */
+.app-header {
+    background-color: var(--card);
+    box-shadow: var(--shadow);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+
+.app-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    height: 32px;
+    width: 32px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--text);
+    margin: 0;
+}
+
+/* User info styles */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.time-display, .user-display {
+    font-size: 14px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.time-display i, .user-display i {
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.user-display {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+}
+
+/* Main container */
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 0 30px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: var(--text);
+    margin-bottom: 18px;
+    line-height: 1.2;
+}
+
+.hero p {
+    color: var(--text-light);
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Search form */
+.search-card {
+    background-color: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 32px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 40%;
+    background-image: url('https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=400&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.04;
+    z-index: 0;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.form-group {
+    margin-bottom: 0;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    padding-left: 42px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: var(--card);
+    color: var(--text);
+    appearance: none;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+.form-icon {
+    position: absolute;
+    top: 41px;
+    left: 16px;
+    color: var(--text-xlight);
+    transition: var(--transition-fast);
+}
+
+.form-control:focus + .form-icon {
+    color: var(--primary);
+}
+
+.date-group {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.btn-submit {
+    height: 54px;
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 20px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+/* Loading indicator */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(29, 78, 216, 0.15);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 18px;
+}
+
+/* Results section */
+.results-container {
+    margin-bottom: 60px;
+}
+
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.results-title {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.category-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    vertical-align: middle;
+}
+
+.category-tag i {
+    margin-right: 6px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.news-card {
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.news-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    border-color: rgba(29, 78, 216, 0.2);
+}
+
+.news-number-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: var(--accent);
+    color: white;
+    border-radius: var(--radius-full);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 2;
+    box-shadow: 0 3px 8px rgba(249, 115, 22, 0.3);
+}
+
+.news-image {
+    height: 160px;
+    background-color: var(--primary-light);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.news-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(120deg, var(--primary-light), rgba(29, 78, 216, 0.1));
+    opacity: 0.7;
+}
+
+.news-image i {
+    font-size: 48px;
+    color: rgba(29, 78, 216, 0.3);
+    z-index: 1;
+}
+
+.news-content {
+    padding: 24px;
+}
+
+.news-source {
+    color: var(--text-xlight);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.news-source i {
+    color: var(--accent);
+}
+
+.news-published-date {
+    color: var(--text-light);
+    font-weight: normal;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.news-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-title a {
+    color: var(--text);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.news-title a:hover {
+    color: var(--primary);
+}
+
+.news-card.bbc-news .news-number-badge {
+    background-color: #bb1919; /* BBC red */
+}
+
+.news-card.the-hindu .news-number-badge {
+    background-color: #0078d4; /* Hindu blue */
+}
+
+.news-card.al-jazeera .news-number-badge {
+    background-color: #fa9000; /* Al Jazeera orange */
+}
+
+.news-card.bbc-news .news-image {
+    background-color: rgba(187, 25, 25, 0.1);
+}
+
+.news-card.the-hindu .news-image {
+    background-color: rgba(0, 120, 212, 0.1);
+}
+
+.news-card.al-jazeera .news-image {
+    background-color: rgba(250, 144, 0, 0.1);
+}
+
+.news-card.bbc-news .news-image::before {
+    background-image: linear-gradient(120deg, rgba(187, 25, 25, 0.1), rgba(187, 25, 25, 0.05));
+}
+
+.news-card.the-hindu .news-image::before {
+    background-image: linear-gradient(120deg, rgba(0, 120, 212, 0.1), rgba(0, 120, 212, 0.05));
+}
+
+.news-card.al-jazeera .news-image::before {
+    background-image: linear-gradient(120deg, rgba(250, 144, 0, 0.1), rgba(250, 144, 0, 0.05));
+}
+
+.news-card.bbc-news .news-source i {
+    color: #bb1919;
+}
+
+.news-card.the-hindu .news-source i {
+    color: #0078d4;
+}
+
+.news-card.al-jazeera .news-source i {
+    color: #fa9000;
+}
+
+/* Source selector styling */
+optgroup {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.news-summary {
+    color: var(--text-light);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+.news-date {
+    color: var(--text-xlight);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.read-more {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-fast);
+}
+
+.read-more:hover {
+    color: var(--primary-dark);
+    gap: 8px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px 30px;
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.no-results-icon {
+    font-size: 48px;
+    color: var(--text-xlight);
+    margin-bottom: 16px;
+}
+
+.no-results h3 {
+    color: var(--text);
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.no-results p {
+    color: var(--text-light);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Footer */
+.app-footer {
+    background-color: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-text {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* Apply staggered animations to news cards */
+.news-card {
+    animation-duration: 0.6s;
+}
+
+.news-card:nth-child(1) { animation-delay: 0.1s; }
+.news-card:nth-child(2) { animation-delay: 0.2s; }
+.news-card:nth-child(3) { animation-delay: 0.3s; }
+.news-card:nth-child(4) { animation-delay: 0.4s; }
+.news-card:nth-child(5) { animation-delay: 0.5s; }
+.news-card:nth-child(6) { animation-delay: 0.6s; }
+.news-card:nth-child(7) { animation-delay: 0.7s; }
+.news-card:nth-child(8) { animation-delay: 0.8s; }
+.news-card:nth-child(9) { animation-delay: 0.9s; }
+.news-card:nth-child(10) { animation-delay: 1s; }
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .date-group {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-info {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+    }
+    
+    .hero {
+        padding: 40px 0 20px;
+    }
+    
+    h1 {
+        font-size: 32px;
+    }
+    
+    .hero p {
+        font-size: 16px;
+    }
+    
+    .search-card {
+        padding: 24px;
+    }
+    
+    .search-card::before {
+        display: none;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .date-group {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+}
+
+
+/* Dark mode styles */
+
+/* Add this to your dark mode section in the CSS */
+body.dark-mode select,
+body.dark-mode option,
+body.dark-mode optgroup {
+    color: var(--dm-text);
+}
+
+/* This ensures the dropdown text is visible when opened in dark mode */
+body.dark-mode select option {
+    background-color: var(--dm-card);
+    color: var(--dm-text);
+}
+
+body.dark-mode select optgroup {
+    background-color: var(--dm-card);
+    color: var(--dm-text);
+    font-weight: 700;
+}
+
+body.dark-mode {
+    background-color: var(--dm-background);
+    color: var(--dm-text);
+    background-image: 
+        radial-gradient(circle at 20% 35%, rgba(29, 78, 216, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 44%, rgba(249, 115, 22, 0.07) 0%, transparent 60%);
+}
+
+body.dark-mode .app-header,
+body.dark-mode .search-card,
+body.dark-mode .news-card,
+body.dark-mode .app-footer,
+body.dark-mode .no-results,
+body.dark-mode .form-control {
+    background-color: var(--dm-card);
+    border-color: var(--dm-border);
+}
+
+body.dark-mode .logo-text,
+body.dark-mode h1,
+body.dark-mode .results-title,
+body.dark-mode .news-title a {
+    color: var(--dm-text);
+}
+
+body.dark-mode .hero p,
+body.dark-mode .news-summary,
+body.dark-mode .form-label {
+    color: var(--dm-text-light);
+}
+
+body.dark-mode .form-control {
+    color: var(--dm-text);
+}
+
+body.dark-mode .time-display,
+body.dark-mode .user-display {
+    color: var(--dm-text-light);
+}
+
+body.dark-mode .user-display {
+    background-color: rgba(29, 78, 216, 0.2);
+}

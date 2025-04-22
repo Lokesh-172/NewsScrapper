@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global News Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="app-header">
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <h2 class="logo-text">NewsExplorer</h2>
+        </div>
+        <div class="user-info">
+            <span class="time-display"><i class="far fa-clock"></i> {{ current_utc }} UTC</span>
+            <span class="user-display"><i class="fas fa-user"></i> {{ user_login }}</span>
+            <button id="theme-toggle" class="btn-icon">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Discover Global News Stories</h1>
+        <p>Explore the latest news from BBC, The Hindu, and Al Jazeera across different categories and time periods.</p>
+    </div>
+    
+    <div class="search-card">
+        <form method="POST" id="newsForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="category" class="form-label">News Source & Category</label>
+                    <select name="category" id="category" class="form-control" required>
+                        <optgroup label="BBC News">
+                            <option value="BBC Politics">BBC Politics</option>
+                            <option value="BBC Finance">BBC Finance</option>
+                            <option value="BBC Entertainment">BBC Entertainment</option>
+                            <option value="BBC Sports">BBC Sports</option>
+                            <option value="BBC India">BBC India</option>
+                        </optgroup>
+                        <optgroup label="The Hindu">
+                            <option value="Hindu National">Hindu National</option>
+                            <option value="Hindu Business">Hindu Business</option>
+                            <option value="Hindu Sport">Hindu Sport</option>
+                            <option value="Hindu Entertainment">Hindu Entertainment</option>
+                            <option value="Hindu Science">Hindu Science</option>
+                        </optgroup>
+                        <optgroup label="Al Jazeera">
+                            <option value="AlJazeera Middle East">AlJazeera Middle East</option>
+                            <option value="AlJazeera Asia">AlJazeera Asia</option>
+                            <option value="AlJazeera Economy">AlJazeera Economy</option>
+                            <option value="AlJazeera Sports">AlJazeera Sports</option>
+                            <option value="AlJazeera Features">AlJazeera Features</option>
+                        </optgroup>
+                    </select>
+                    <i class="fas fa-globe form-icon"></i>
+                </div>
+                
+                <div class="date-group">
+                    <div class="form-group">
+                        <label for="start_date" class="form-label">From Date</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date }}">
+                        <i class="fas fa-calendar-alt form-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date" class="form-label">To Date</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date }}">
+                        <i class="fas fa-calendar-alt form-icon"></i>
+                    </div>
+                </div>
+                
+                <button type="submit" id="fetchBtn" class="btn btn-submit">
+                    <i class="fas fa-search"></i>
+                    <span>Find News</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="loading" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Searching for the latest stories...</p>
+    </div>
+
+    <div id="results" class="results-container">
+        {% if articles %}
+            <div class="results-header">
+                <h2 class="results-title">
+                    Latest News
+                    <span class="category-tag">
+                        {% if category.startswith('BBC Politics') %}
+                            <i class="fas fa-landmark"></i>
+                        {% elif category.startswith('BBC Finance') or category.startswith('BBC Business') or category.startswith('Hindu Business') or category.startswith('AlJazeera Economy') %}
+                            <i class="fas fa-chart-line"></i>
+                        {% elif category.startswith('BBC Entertainment') or category.startswith('Hindu Entertainment') %}
+                            <i class="fas fa-film"></i>
+                        {% elif category.startswith('BBC Sports') or category.startswith('Hindu Sport') or category.startswith('AlJazeera Sports') %}
+                            <i class="fas fa-futbol"></i>
+                        {% elif category.startswith('BBC India') or category.startswith('Hindu National') %}
+                            <i class="fas fa-map-marker-alt"></i>
+                        {% elif category.startswith('Hindu Science') %}
+                            <i class="fas fa-flask"></i>
+                        {% elif category.startswith('AlJazeera Middle East') %}
+                            <i class="fas fa-mosque"></i>
+                        {% elif category.startswith('AlJazeera Asia') %}
+                            <i class="fas fa-torii-gate"></i>
+                        {% elif category.startswith('AlJazeera Features') %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="fas fa-newspaper"></i>
+                        {% endif %}
+                        {{ category }}
+                    </span>
+                </h2>
+                <div class="results-meta">
+                    <span class="articles-count">{{ articles|length }} articles found</span>
+                </div>
+            </div>
+            
+            <div class="news-grid">
+                {% for article in articles %}
+                    <div class="news-card {{ article.source|lower|replace(' ', '-') }}">
+                        <div class="news-number-badge">{{ loop.index }}</div>
+                        <div class="news-image">
+                            {% if article.source == 'BBC News' %}
+                                <i class="far fa-newspaper"></i>
+                            {% elif article.source == 'The Hindu' %}
+                                <i class="fas fa-om"></i>
+                            {% elif article.source == 'Al Jazeera' %}
+                                <i class="fas fa-globe-asia"></i>
+                            {% else %}
+                                <i class="far fa-newspaper"></i>
+                            {% endif %}
+                        </div>
+                        <div class="news-content">
+                            <div class="news-source">
+                                {% if article.source == 'BBC News' %}
+                                    <i class="fas fa-broadcast-tower"></i>
+                                {% elif article.source == 'The Hindu' %}
+                                    <i class="fas fa-Om"></i>
+                                {% elif article.source == 'Al Jazeera' %}
+                                    <i class="fas fa-tv"></i>
+                                {% else %}
+                                    <i class="fas fa-newspaper"></i>
+                                {% endif %}
+                                {{ article.source }}
+                                {% if article.published_date %}
+                                <span class="news-published-date">
+                                    • Published: {{ article.formatted_date }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <h3 class="news-title">
+                                <a href="{{ article.link }}" target="_blank">{{ article.headline }}</a>
+                            </h3>
+                            <p class="news-summary">{{ article.summary }}</p>
+                            <div class="news-footer">
+                                <div class="news-date">
+                                    {% if article.published_date %}
+                                        <i class="far fa-calendar-alt"></i> {{ article.published_date }}
+                                    {% else %}
+                                        <i class="far fa-clock"></i> Recently published
+                                    {% endif %}
+                                </div>
+                                <a href="{{ article.link }}" target="_blank" class="read-more">
+                                    Read more <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif search_performed %}
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>No articles found</h3>
+                <p>Try adjusting your search criteria or selecting a different category.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<footer class="app-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-text">
+                &copy; 2025 NewsExplorer | Powered by BBC, The Hindu, and Al Jazeera
+            </div>
+            <div class="footer-links">
+                <a href="#" class="read-more">About this project <i class="fas fa-info-circle"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
